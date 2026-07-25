@@ -30,23 +30,26 @@ class RegisterController extends Controller
 
         // Get verification
         event(new Registered($user));
-        
+
         // Log them in
         Auth::login($user);
 
+        /*
+        isJson():
+            Determine if the request is sending JSON.
+            It's all about formatting the request.
+
+        wantsJson():
+            Determine if the current request is requesting JSON as the response.
+            It's all about the response.
+        */
         $token = $user->createToken('token')->plainTextToken;
-
-        $res = [
-            'user' => $user,
-            'token' => $token,
-        ];
-
-        if ($request->wantsJson()) { 
+        if ($request->wantsJson()) {
             return response()->json([
                 'user' => new UserResource($user),
                 'token' => $token,
                 'message' => 'registered'
-            ]);
+            ], 200);
         };
 
         // Redirect to home

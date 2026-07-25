@@ -13,19 +13,18 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-        
-        $request->user()->currentAccessToken()->delete();
 
         if ($request->wantsJson()) {
+            $request->user()->currentAccessToken()->delete();
+            $request->user()->tokens()->delete();
             return response()->json([
                 'message' => 'success logout'
-            ]);
+            ], 200);
         };
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Успешный выход');
     }
