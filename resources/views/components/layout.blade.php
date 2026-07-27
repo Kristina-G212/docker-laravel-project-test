@@ -30,8 +30,8 @@
                         </button>
                     </form>
                     @else
-                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 hover:text-indigo-600">Вход</a>
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
+                    <a href="{{ route('view.login') }}" class="text-sm font-medium text-gray-700 hover:text-indigo-600">Вход</a>
+                    <a href="{{ route('view.register') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
                         Регистрация
                     </a>
                     @endauth

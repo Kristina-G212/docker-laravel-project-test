@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
      * Show the profile for a given user.
      */
-    public function __invoke(Request $request): View | UserResource | JsonResponse
+    public function __invoke(Request $request)
     {
         $user = $request->user();
 
