@@ -1,8 +1,8 @@
 <x-layout>
-    <x-slot:title>
-        Главная
-    </x-slot:title>
-    
+  <x-slot:title>
+    Главная
+  </x-slot:title>
+
   <!-- Основной контент -->
   <main class="flex-1 flex items-center justify-center">
     <div class="text-center px-4 py-12">
@@ -20,5 +20,4 @@
       </p>
     </div>
   </main>
-
 </x-layout>

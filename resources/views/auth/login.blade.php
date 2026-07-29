@@ -9,14 +9,14 @@
         Вход в аккаунт
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
-        Или <a href="{{ route('view.register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">создайте новый аккаунт</a>
+        Или <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">создайте новый аккаунт</a>
       </p>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" action="{{ route('login') }}" method="POST">
-
+        <form id="login-form" class="space-y-6" action="/api/auth/login" method="POST">
+          @csrf
           <!-- Почта -->
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Электронная почта или телефон</label>
@@ -52,14 +52,48 @@
           </div>
         </form>
 
-        <!-- Или -->
-        <div class="mt-6 text-center text-sm">
-          <span class="text-gray-600">Нет аккаунта?</span>
-          <a href="{{ route('register') }}" class="ml-1 font-medium text-indigo-600 hover:text-indigo-500">
-            Создать
-          </a>
-        </div>
       </div>
     </div>
   </div>
+  <x-slot:scripts>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember_me').checked;
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+
+        try {
+          const response = await fetch(this.action, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              remember_me: rememberMe
+            })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            localStorage.setItem('api_token', data.token);
+            localStorage.setItem('email', email);
+            window.location.href = '/login/2fa';
+          } else {
+            alert(data.error || data.message);
+          }
+        } catch (error) {
+          console.error('Ошибка при отправке запроса:', error);
+          alert('Произошла ошибка при соединении с сервером');
+        }
+      });
+    </script>
+  </x-slot:scripts>
 </x-layout>
