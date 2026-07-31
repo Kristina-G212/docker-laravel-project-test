@@ -6,6 +6,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\UpdateUserDataController;
 use App\Http\Controllers\Auth\UpdateUserPasswordController;
+use App\Http\Controllers\Get\GetAuthorBookController;
+use App\Http\Controllers\Get\GetBookController;
+use App\Http\Controllers\Get\GetBookGenreController;
 use App\Http\Resources\UserResource;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -15,6 +18,10 @@ Route::group(['middleware' => ['guest']], function () {
   Route::post('/auth/register', RegisterController::class);
   Route::post('/auth/login', LoginController::class);
   Route::post('/auth/code', TwoFactorController::class);
+
+  Route::get('/books', GetBookController::class);
+  Route::get('/authors', GetAuthorBookController::class);
+  Route::get('/genres', GetBookGenreController::class);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {

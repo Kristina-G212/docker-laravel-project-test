@@ -18,46 +18,53 @@
     </form>
   </div>
 
-  <x-slot:scripts>
+<x-slot:scripts>
     <script>
-      document.addEventListener("DOMContentLoaded", async () => {
+      // потом либо переделать эту 2фа либо вернуть подтверждение по ссылке
+      document.getElementById('verify-code-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
         const messageEl = document.getElementById('status-message');
-        const token = localStorage.getItem('api_token'); 
+        const token = localStorage.getItem('api_token');
+        const email = localStorage.getItem('email');
+        const csrfToken = document.querySelector('input[name="_token"]').value;
 
-        const currentPath = window.location.pathname;
-        const searchParams = window.location.search;
+        const code = document.getElementById('code').value;
 
-        if (searchParams.includes('signature=')) {
-          
-          if (!token) {
-            messageEl.innerText = "Для подтверждения почты авторизуйтесь в системе на этом устройстве.";
-            return;
+        console.log('токен с 2фа ' + token);
+
+        const url = "/api/auth/code";
+        const data = {
+          email: email,
+          code: code,
+        };
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify(data),
+          });
+
+          const json = await response.json();
+
+          if (response.ok) {
+            console.log("Успех:", JSON.stringify(json));
+            console.log(json.message);
+
+            localStorage.setItem('api_token', json.token);
+            window.location.href = '/user/profile'
+          } else {
+            console.error(data.message)
           }
 
-          messageEl.innerText = "Подтверждаем вашу почту...";
-          const apiUrl = `/api${currentPath}${searchParams}`;
-
-          try {
-            const response = await fetch(apiUrl, {
-              method: "GET",
-              headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-              }
-            });
-
-            const json = await response.json();
-
-            if (response.ok) {
-              messageEl.innerText = "Почта успешно подтверждена! Перенаправляем...";
-              setTimeout(() => window.location.href = '/user/profile', 1500);
-            } else {
-              messageEl.innerText = json.message || "Ссылка недействительна или принадлежит другому аккаунту.";
-            }
-          } catch (error) {
-            console.error("Ошибка:", error);
-            messageEl.innerText = "Ошибка сети при подтверждении.";
-          }
+        } catch (error) {
+          console.error("Ошибка:", error);
+          console.log(json.message);
         }
       });
     </script>
