@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Builders\BookBuilder;
+use App\Builders\CustomBuilder;
 use Database\Factories\BookFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
@@ -35,8 +35,8 @@ class Book extends Model
     return $this->belongsTo(Author::class); //->chaperone(); работает только с hasmany
   }
 
-  public function newEloquentBuilder($query): BookBuilder
+  public function newEloquentBuilder($query): CustomBuilder
   {
-    return new BookBuilder($query);
+    return new CustomBuilder($query);
   }
 }

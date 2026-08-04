@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['first_name', 'last_name', 'middle_name', 'nickname'])]
 class Author extends Model
 {
-    use HasFactory;
-    /**
-     * Get the author for the book.
-     */ 
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
+  use HasFactory;
+  /**
+   * Get the author for the book.
+   */
+  public function books(): HasMany
+  {
+    return $this->hasMany(Book::class);
+  }
 }

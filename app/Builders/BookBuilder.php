@@ -2,19 +2,8 @@
 
 namespace App\Builders;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
-
- * Настроить сортировки для метода получения книг
- * Сортировка по дате создания
- *  От старых к новым
- *  От новых к старым
- * Сортировка по цене
- *  От дешевых к дорогим
- *  От дорогих к дешевым
- */
 class BookBuilder extends Builder
 {
   public function SortByCreationDate(string $date)
@@ -36,23 +25,19 @@ class BookBuilder extends Builder
     }
     return $this;
   }
-
+// --------------------------------------------------
   public function FilterByAuthor(string $author)
   {
-    return $this->where(
-      function ($query) use ($author) {
-        $query->where("author", "LIKE", "%$author%");
-      }
-    );
+    return $this->whereHas("author", function ($query) use ($author) {
+      $query->where('first_name', 'ilike', "%$author%");
+    });
   }
 
   public function FilterByGenre(string $genre)
   {
-    return $this->where(
-      function ($query) use ($genre) {
-        $query->where("genre", "LIKE", "%$genre%");
-      }
-    );
+    return $this->whereHas("genre", function ($query) use ($genre) {
+      $query->where('name', 'ilike', "%$genre%");
+    });
   }
 
   public function DateBetween(int $from, int $to) {
