@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -30,6 +31,14 @@ class User extends Authenticatable implements MustVerifyEmail
       'password' => 'hashed',
       'two_factor_expires_at' => 'datetime'
     ];
+  }
+
+  /**
+   * книги, принадлежащие пользователю
+   */
+  public function favorite(): BelongsToMany
+  {
+    return $this->belongsToMany(Book::class, 'favorites', 'user_id', 'book_id');
   }
 
   function generateTwoFactorCode()
