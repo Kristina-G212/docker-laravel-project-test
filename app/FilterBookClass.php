@@ -19,7 +19,8 @@ class FilterBookClass
   {
     $author = $this->request->query('author');
     $genre = $this->request->query('genre');
-    $dateBetween = $this->request->query('dateBetween');
+    $from = $this->request->query('from');
+    $to = $this->request->query('to');
 
     if ($author) {
       return $query->whereHas("author", function ($query) use ($author) {
@@ -33,8 +34,12 @@ class FilterBookClass
       });
     }
 
-    if ($dateBetween) {
-      return $query->whereBetween('year', [$query->request->from, $query->request->to]);
+    if ($from && $to) {
+      return $query->whereBetween('year', [$from, $to]);
+    } elseif ($from) {
+      return $query->whereBetween('year', ">= $from");
+    } elseif ($to) {
+      return $query->whereBetween('year', "<= $from");
     }
 
     return $query;
