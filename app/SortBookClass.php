@@ -25,13 +25,21 @@ class SortBookClass
     $price = $this->request->query('sortPrice');
 
     if ($date) {
-      $direction = Str::camel($date) === 'sortFromOldToNew' ? 'asc' : 'desc';
-      return $query->orderBy('year', $direction);
+      $direction = Str::camel($date);
+      if ($direction == 'sortFromOldToNew') {
+        return $query->orderBy('year', 'asc');
+      } elseif ($direction == 'sortFromOldToNew') {
+        return $query->orderBy('year', 'desc');
+      }
     }
 
     if ($price) {
-      $direction = Str::camel($price) === 'sortFromCheapToExpensive' ? 'asc' : 'desc';
-      return $query->orderBy('year', $price);
+      $direction = Str::camel($price);
+      if ($direction == 'sortFromCheapToExpensive') {
+        return $query->orderBy('price', 'asc');
+      } elseif ($direction == 'sortFromCheapToExpensive') {
+        return $query->orderBy('price', 'desc');
+      }
     }
 
     return $query;
