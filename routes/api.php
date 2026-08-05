@@ -6,6 +6,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\UpdateUserDataController;
 use App\Http\Controllers\Auth\UpdateUserPasswordController;
+use App\Http\Controllers\FavoriteBook\AddFavoriteBookController;
+use App\Http\Controllers\FavoriteBook\DeleteAllFavoriteBooksController;
+use App\Http\Controllers\FavoriteBook\DeleteOneFavoriteBookController;
+use App\Http\Controllers\FavoriteBook\GetFavoriteBookController;
 use App\Http\Controllers\Get\GetAuthorBookController;
 use App\Http\Controllers\Get\GetBookController;
 use App\Http\Controllers\Get\GetBookGenreController;
@@ -30,6 +34,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
   });
   Route::put('/user/profile', UpdateUserDataController::class);
   Route::put('/user/profile/password', UpdateUserPasswordController::class);
+
+  Route::post('/user/favorite', AddFavoriteBookController::class);
+  Route::get('/user/favorite', GetFavoriteBookController::class);
+  Route::delete('/user/favorite', DeleteOneFavoriteBookController::class);
+  Route::delete('/user/favorite/all', DeleteAllFavoriteBooksController::class);
+
   Route::post('/logout', LogoutController::class);
 });
 
