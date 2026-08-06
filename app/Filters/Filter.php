@@ -35,7 +35,7 @@ abstract class Filter
    */
   public function apply(Builder $builder): Builder
   {
-    $this->builder = builder;
+    $this->builder = $builder;
 
     foreach ($this->request->input() as $method => $value) {
       $methodName = Str::camel($method);

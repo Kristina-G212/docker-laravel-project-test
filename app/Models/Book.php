@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Override;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+use function Termwind\terminal;
 
 /**
  * $table->foreignId('genre_id');
@@ -18,9 +25,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[UseFactory(BookFactory::class)]
 #[Fillable('genre_id', 'author_id', 'title', 'description', 'price', 'old_price', 'year')]
-class Book extends Model
+class Book extends Model implements HasMedia
 {
-  use HasFactory;
+  use HasFactory, InteractsWithMedia;
   /**
    * Get the genre that owns the book.
    */
@@ -44,6 +51,18 @@ class Book extends Model
     return $this->belongsToMany(User::class, 'favorites', 'book_id', 'user_id');
   }
 
+  public function registerMediaCollections(?Media $media = null): void
+  {
+    $this->addMediaCollection('book-picture');
+  }
+
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this
+      ->addMediaConversion('preview')
+      ->fit(Fit::Contain, 300, 300)
+      ->nonQueued();
+  }
 
   public function newEloquentBuilder($query): CustomBuilder
   {

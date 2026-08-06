@@ -27,18 +27,18 @@ class SortBookClass
     if ($date) {
       $direction = Str::camel($date);
       if ($direction == 'sortFromOldToNew') {
-        return $query->orderBy('year', 'asc');
+        $query->orderBy('year', 'asc');
       } elseif ($direction == 'sortFromOldToNew') {
-        return $query->orderBy('year', 'desc');
+        $query->orderBy('year', 'desc');
       }
     }
 
     if ($price) {
       $direction = Str::camel($price);
       if ($direction == 'sortFromCheapToExpensive') {
-        return $query->orderBy('price', 'asc');
+        $query->orderBy('price', 'asc');
       } elseif ($direction == 'sortFromCheapToExpensive') {
-        return $query->orderBy('price', 'desc');
+        $query->orderBy('price', 'desc');
       }
     }
 

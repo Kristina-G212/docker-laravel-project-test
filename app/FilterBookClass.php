@@ -23,13 +23,13 @@ class FilterBookClass
     $to = $this->request->query('to');
 
     if ($author) {
-      return $query->whereHas("author", function ($query) use ($author) {
+      $query->whereHas("author", function ($query) use ($author) {
         $query->where('first_name', 'ilike', "%$author%");
       });
     }
 
     if ($genre) {
-      return $query->whereHas("genre", function ($query) use ($genre) {
+      $query->whereHas("genre", function ($query) use ($genre) {
         $query->where('name', 'ilike', "%$genre%");
       });
     }
@@ -37,9 +37,9 @@ class FilterBookClass
     if ($from && $to) {
       return $query->whereBetween('year', [$from, $to]);
     } elseif ($from) {
-      return $query->whereBetween('year', ">= $from");
+      $query->where('year', ">= $from");
     } elseif ($to) {
-      return $query->whereBetween('year', "<= $from");
+      $query->where('year', "<= $from");
     }
 
     return $query;

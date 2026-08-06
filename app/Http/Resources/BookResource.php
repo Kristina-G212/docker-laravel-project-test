@@ -9,30 +9,6 @@ use Override;
 
 class BookResource extends JsonResource
 {
-  /**
-   * The resource's attributes.
-   */
-  // public $attributes = [
-  //   'title',
-  //   'description',
-  //   'price',
-  //   'old_price',
-  //   'year'
-  // ];
-
-  // /**
-  //  * The resource's relationships.
-  //  */
-
-  // #[Override]
-  // public function toRelationships(Request $request)
-  // {
-  //   return [
-  //     'author' => AuthorResource::class,
-  //     'genre' => GenreResource::class,
-  //   ];
-  // }
-
   #[Override]
   public function toArray(Request $request)
   {
@@ -44,6 +20,13 @@ class BookResource extends JsonResource
       'year' => $this->year,
       'genre' => new GenreResource($this->genre),
       'author' => new AuthorResource($this->author),
-    ];
+      'media' => $this->getMedia('book-picture')->map(function ($media) {
+        return [
+          'url' => $media->getUrl(),
+          'path' => $media->getPath()
+          ];
+      }),
+      'preview' => $this->getFirstMediaUrl('preview'),
+      ];
   }
 }

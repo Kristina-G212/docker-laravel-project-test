@@ -15,6 +15,6 @@ class GetAuthorBookController extends Controller
    */
   public function __invoke(Request $request)
   {
-    return AuthorResource::collection(Author::paginate(5));
+    return AuthorResource::collection(Author::paginate(10));
   }
 }

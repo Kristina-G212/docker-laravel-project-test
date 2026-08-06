@@ -67,6 +67,11 @@
               const meta = json.meta
 
               console.log("Данные книг:", data);
+              console.log("Данные media:", data[0].media);
+              data[0].media.forEach(url => {
+                const picture = url.url
+                console.log(picture)
+              });
               console.log("Ссылки пагинации:", links);
               // книги
               cards(data);
@@ -86,24 +91,38 @@
 
           books.forEach(book => {
             const title = book.title
-            const description = book.description 
+            const description = book.description
             const price = book.price
             const oldPrice = book.old_price
             const year = book.year
-            const genre = book.genre.name 
+            const genre = book.genre.name
             const authorFirstName = book.author.first_name
+            const bookPicture = book.media[0].url
 
             const card = `
-              <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 flex flex-col justify-between">
-                <div class="p-6">
-                  <div class="flex items-center justify-between text-xs font-semibold mb-3">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
-                      ${genre}
-                    </span>
-                    <span class="text-gray-400">${year} г.</span>
+            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col justify-between">
+              <!-- Блок с картинкой / обложкой -->
+              <div class="relative w-full h-64 bg-gray-100 overflow-hidden flex items-center justify-center">
+                <img 
+                  src="${bookPicture}" 
+                  alt="" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                
+                <!-- Бейдж жанра поверх обложки -->
+                <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-indigo-700 shadow-sm">
+                  ${genre}
+                </span>
+              </div>
+
+              <!-- Контенттная часть -->
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between text-xs font-semibold text-gray-400 mb-2">
+                    <span>${year} г.</span>
                   </div>
 
-                  <h3 class="text-xl font-bold text-gray-900 line-clamp-1 hover:text-indigo-600 transition-colors cursor-pointer" title="${title}">
+                  <h3 class="text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-indigo-600 transition-colors cursor-pointer" title="${title}">
                     ${title}
                   </h3>
 
@@ -115,21 +134,23 @@
                     ${description}
                   </p>
                 </div>
-
-                <div class="px-6 pb-6 pt-2 border-t border-gray-50 flex items-center justify-between mt-auto">
-                  <div class="flex flex-col">
-                    <span class="text-xs text-gray-400 line-through">${oldPrice} ₽</span>
-                    <span class="text-xl font-extrabold text-gray-900">${price} ₽</span>
-                  </div>
-
-                  <button type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
-                    В корзину
-                  </button>
-                </div>
               </div>
+
+              <!-- Нижняя часть: Цены и Кнопка -->
+              <div class="px-6 pb-6 pt-3 border-t border-gray-50 flex items-center justify-between mt-auto">
+                <div class="flex flex-col">
+                  <span class="text-xs text-gray-400 line-through">${oldPrice} ₽</span>
+                  <span class="text-xl font-extrabold text-gray-900">${price} ₽</span>
+                </div>
+
+                <button type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                  <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                  </svg>
+                  В корзину
+                </button>
+              </div>
+            </div>
             `;
 
             container.insertAdjacentHTML('beforeend', card);
