@@ -16,7 +16,6 @@ class FavoriteBookResource extends JsonResource
   {
     return [
       'id' => $this->id,
-      'user' => new UserResource($this->whenLoaded('user')),
       'book' => new BookResource($this->whenLoaded('book'))
     ];
   }

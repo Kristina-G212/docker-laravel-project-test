@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Comment;
 use App\Models\Favorite;
 use App\Models\Genre;
 use App\Models\User;
@@ -19,29 +20,40 @@ class DatabaseSeeder extends Seeder
    */
   public function run(): void
   {
-    $user = User::factory()
+    $users = User::factory()
       ->count(10)
       ->create();
 
-    $author = Author::factory()
+    $authors = Author::factory()
       ->count(15)
       ->create();
-    $genre = Genre::factory()
+    $genres = Genre::factory()
       ->count(3)
       ->create();
 
-    $book = Book::factory()
-      ->recycle($author)
-      ->recycle($genre)
+    $books = Book::factory()
+      ->recycle($authors)
+      ->recycle($genres)
       ->count(30)
       ->create();
 
-    foreach ($user as $thisUser) {
-      $thisBooks = $book->random(rand(1, 10));
-      Favorite::factory()
-        ->recycle($thisUser)
-        ->recycle($thisBooks)
-        ->create();
+    foreach ($users as $user) {
+      $favoriteBooks = $books->random(rand(0, 10));
+
+      foreach ($favoriteBooks as $favoriteBook) {
+        Favorite::factory()
+          ->create([
+            'user_id' => $user->id,
+            'book_id' => $favoriteBook->id
+          ]);
+      }
+
+      Comment::factory()
+        ->count(rand(0, 5))
+        ->create([
+          'user_id' => $user->id,
+          'book_id' => $books->random()->id
+        ]);
     }
   }
 }

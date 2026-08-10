@@ -41,6 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->belongsToMany(Book::class, 'favorites', 'user_id', 'book_id');
   }
 
+  public function comments(): BelongsToMany
+  {
+    return $this->belongsToMany(Book::class, 'comments', 'user_id', 'book_id');
+  }
+
   function generateTwoFactorCode()
   {
     $this->timestamps = false;

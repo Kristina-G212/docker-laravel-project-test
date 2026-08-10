@@ -51,6 +51,11 @@ class Book extends Model implements HasMedia
     return $this->belongsToMany(User::class, 'favorites', 'book_id', 'user_id');
   }
 
+  public function comments(): BelongsToMany
+  {
+    return $this->belongsToMany(User::class, 'comments', 'book_id', 'user_id');
+  }
+
   public function registerMediaCollections(?Media $media = null): void
   {
     $this->addMediaCollection('book-picture');
