@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\CustomBuilder;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
@@ -24,5 +25,10 @@ class Comment extends Model
   public function book(): BelongsTo
   {
     return $this->BelongsTo(Book::class);
+  }
+
+  public function newEloquentBuilder($query): CustomBuilder
+  {
+    return new CustomBuilder($query);
   }
 }

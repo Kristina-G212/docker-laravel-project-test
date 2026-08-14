@@ -23,6 +23,7 @@ class CommentResource extends JsonResource
       'plus' => $this->plus,
       'minus' => $this->minus,
       'anonymous' => $this->anonymous,
+      'created_at' => $this->created_at
     ];
   }
 }

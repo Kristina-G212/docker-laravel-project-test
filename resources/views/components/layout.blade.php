@@ -16,7 +16,7 @@
           <a href="/" class="text-xl font-bold text-indigo-600">Книги</a>
         </div>
         <div class="flex items-center space-x-4">
-          <p id='nickname-profile' class="hidden"></p>
+          <a href="{{ route('profile') }}" id='nickname-profile' class="hidden"></a>
           <form id='logout-form' class="hidden inline">
             @csrf
             <button type="submit" class="text-indigo-600 hover:text-indigo-500 font-medium underline border-none bg-transparent p-0 cursor-pointer">

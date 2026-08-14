@@ -28,7 +28,7 @@ class SortBookClass
       $direction = Str::camel($date);
       if ($direction == 'sortFromOldToNew') {
         $query->orderBy('year', 'asc');
-      } elseif ($direction == 'sortFromOldToNew') {
+      } elseif ($direction == 'sortFromNewToOld') {
         $query->orderBy('year', 'desc');
       }
     }
@@ -37,7 +37,7 @@ class SortBookClass
       $direction = Str::camel($price);
       if ($direction == 'sortFromCheapToExpensive') {
         $query->orderBy('price', 'asc');
-      } elseif ($direction == 'sortFromCheapToExpensive') {
+      } elseif ($direction == 'sortFromExpensiveToCheap') {
         $query->orderBy('price', 'desc');
       }
     }

@@ -87,11 +87,11 @@
             localStorage.setItem('email', email);
             window.location.href = '/login/2fa';
           } else {
-            alert(data.error || data.message);
+            console.error(data.error || data.message);
           }
+
         } catch (error) {
-          console.error('Ошибка при отправке запроса:', error);
-          alert('Произошла ошибка при соединении с сервером');
+          console.error(error);
         }
       });
     </script>

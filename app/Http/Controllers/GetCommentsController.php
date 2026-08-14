@@ -7,7 +7,6 @@ use App\Http\Resources\CommentResource;
 use App\Models\Book;
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Nette\Schema\Message;
 
 class GetCommentsController extends Controller
 {
@@ -18,7 +17,7 @@ class GetCommentsController extends Controller
   {
     $bookId = $request->input('book_id');
     $book = Book::query()->where('id', $bookId)->first();
-    $comments = Comment::query()->with('user', 'book')->where('book_id', $bookId)->paginate(10);
+    $comments = Comment::query()->with('user', 'book')->SearchRequest($request)->where('book_id', $bookId)->paginate(10);
 
     return CommentResource::collection($comments)->additional([
       'message' => 'get all comments for current book', 

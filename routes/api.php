@@ -14,6 +14,7 @@ use App\Http\Controllers\FavoriteBook\GetFavoriteBookController;
 use App\Http\Controllers\Get\GetAuthorBookController;
 use App\Http\Controllers\Get\GetBookController;
 use App\Http\Controllers\Get\GetBookGenreController;
+use App\Http\Controllers\GetBookStatisticController;
 use App\Http\Controllers\GetCommentsController;
 use App\Http\Controllers\GetUserCommentsController;
 use App\Http\Controllers\UpdatetUserCommentController;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['guest']], function () {
   Route::get('/genres', GetBookGenreController::class);
 
   Route::get('/comments', GetCommentsController::class);
+  Route::get('/bookstatistic', GetBookStatisticController::class);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
